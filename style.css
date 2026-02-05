@@ -1,0 +1,17 @@
+body {
+  font-family: sans-serif;
+  background: #f5f5f5;
+  text-align: center;
+}
+#cover {
+
+  background-color: #2777c2;  /* رنگ پس‌زمینه کارت */
+  border: 2px solid #0077cc; /* خط دور کارت */
+  border-radius: 12px;       /* گوشه‌های گرد */
+  padding: 20px;             /* فاصله داخلی محتوا */
+  height: 300px;             /* طول*/
+  width: 300px;              /* عرض کارت */
+  margin: 20px auto;         /* وسط صفحه قرار گرفتن و فاصله از بالا/پایین */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* سایه برای عمق دادن */
+  text-align: center;        /* متن وسط */
+}
