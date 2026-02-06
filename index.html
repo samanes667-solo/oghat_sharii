@@ -2,15 +2,19 @@
 <html lang="fa">
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="style.css">
 <title>اوقات شرعی</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="cover">
-<h2>اوقات شرعی امروز</h2>
-<button id="btn">نمایش اوقات</button>
-<div id="output"></div>
+  <h2>اوقات شرعی امروز</h2>
+  <label>طول جغرافیایی: </label><input type="number" id="latitude"><br>
+  <label>عرض جغرافیایی: </label><input type="number" id="longitude"><br>
+  <label>منطقه زمانی: </label><input type="number" id="timeZone" value="3.5"><br>
+  <button id="btn">نمایش اوقات</button>
+  <div id="output"></div><br><br>
+  <div>برنامه‌نویس : ابوالقاسم اسلامی</div>
 </div>
-<script src="script.js"></script>
 </body>
+<script src="script.js"></script>
 </html>
