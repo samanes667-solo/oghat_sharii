@@ -1,8 +1,9 @@
 const deg2rad = d => d * Math.PI / 180;
 const rad2deg = r => r * 180 / Math.PI;
 
+// تبدیل تاریخ gregorian به julian day
 function julianDay(date) {
-  return date / 86400000 + 2440587.5;
+  return date.getTime() / 86400000 + 2440587.5;
 }
 
 function solarPosition(jd) {
@@ -37,108 +38,69 @@ function solarPosition(jd) {
   return { declination, eqTime };
 }
 
-function solarNoon(longitude, timezone, eqTime) {
-  return 12 + timezone - longitude / 15 - eqTime / 60;
+function solarNoon(lng, timezone, eqTime) {
+  return 12 + timezone - lng / 15 - eqTime / 60;
 }
 
 function sunAngleTime(lat, decl, angle) {
   const h = deg2rad(angle);
   const phi= deg2rad(lat);
   const delta = deg2rad(decl);
+  const cosH = (Math.sin(h) - Math.sin(phi)*Math.sin(delta)) / (Math.cos(phi)*Math.cos(delta));
+  if (cosH < -1 || cosH > 1 || isNaN(cosH)) return null;
+  return rad2deg(Math.acos(cosH)) / 15;
+}
 
-  const cosH =
-    (Math.sin(h) - Math.sin(phi) * Math.sin(delta)) /
-    (Math.cos(phi) * Math.cos(delta));
-
-  if (cosH < -1 || cosH > 1) return null;
+function asrHourAngle(lat, declination, factor) {
+  const phi = deg2rad(lat);
+  const delta = deg2rad(declination);
+  const h = Math.atan(1 / (factor + Math.tan(Math.abs(phi - delta))));
+  const cosH = (Math.sin(h) - Math.sin(phi)*Math.sin(delta)) / (Math.cos(phi)*Math.cos(delta));
+  if (cosH < -1 || cosH > 1 || isNaN(cosH)) return null;
   return rad2deg(Math.acos(cosH)) / 15;
 }
 
 function toClock(t) {
-  const h = Math.floor(t);
-  const m = Math.floor((t - h) * 60);
+  if (t == null || isNaN(t)) return "--:--";
+  const h = (Math.floor(t) + 24) % 24;
+  const m = Math.floor((t - Math.floor(t)) * 60);
   return `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}`;
-}
-function asrHourAngle(lat, declination, factor) {
-    const phi = deg2rad(lat);
-    const delta = deg2rad(declination);
-
-    // ارتفاع خورشید در عصر
-    const h = Math.atan(1 / (factor + Math.tan(Math.abs(phi - delta))));
-
-    // زاویه ساعتی
-    const cosH =
-        (Math.sin(h) - Math.sin(phi) * Math.sin(delta)) /
-        (Math.cos(phi) * Math.cos(delta));
-
-    if (cosH < -1 || cosH > 1) return null;
-
-    return rad2deg(Math.acos(cosH)) / 15;
-}
-function getUserLocation(callback) {
-  if (!navigator.geolocation) {
-    alert("مرورگر شما از موقعیت مکانی پشتیبانی نمی‌کند");
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    // موفق
-    position => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      callback(lat, lng);
-    },
-
-    // خطا ← اینجاست 👈
-    error => {
-      alert("دسترسی به موقعیت مکانی داده نشد. استفاده از موقعیت پیش‌فرض.");
-
-      // مختصات پیش‌فرض (قم)
-      const lat = 34.6416;
-      const lng = 50.8746;
-      callback(lat, lng);
-    }
-  );
-}
-
-function getTimezone() {
-  return -new Date().getTimezoneOffset() / 60;
 }
 
 document.getElementById("btn").addEventListener("click", showTimes);
 
 function showTimes() {
-    getUserLocation((lat, lng) => {
-    const tz = getTimezone();
-    
-  const date = new Date();
-  
+  // خواندن ورودی‌ها در لحظه کلیک:
+  let lat = parseFloat(document.getElementById("latitude").value);
+  let lng = parseFloat(document.getElementById("longitude").value);
+  let tz  = parseFloat(document.getElementById("timeZone").value);
 
+  if (isNaN(lat) || isNaN(lng) || isNaN(tz)) {
+    // مختصات پیش‌فرض قم
+    lat = 34.6416; lng = 50.8746; tz = 3.5;
+  }
+
+  const date = new Date();
   const jd = julianDay(date);
   const { declination, eqTime } = solarPosition(jd);
   const noon = solarNoon(lng, tz, eqTime);
-  const h12 = sunAngleTime(lat, declination, -12);
-  const sunMinus12=noon-h12; 
-  const sunriseDiff=sunAngleTime(lat,declination,-0.833);
-const sunrise=noon-sunriseDiff;
-const asrDiff = asrHourAngle(lat, declination, 1); // شیعه
-const asrTime = noon + asrDiff;
-const sunsetDiff=sunAngleTime(lat,declination,-0.833);
-const sunset=noon+sunsetDiff;
-const maghribDiff=sunAngleTime(lat,declination,-4.5);
-const maghrib=noon+maghribDiff;
-const ishaDiff= sunAngleTime(lat, declination,-9);
-const isha=noon+ishaDiff;
-const fajrDiff = sunAngleTime(lat, declination, -17.7);
-const fajr = noon - fajrDiff;
-const nightDuration =(24 - maghrib) + fajr;
-const midnight = maghrib + nightDuration / 2;
 
-// عصر (شافعی = 1)
-// عصر (شیعه =1.11) 
-  document.getElementById("output").innerHTML = "اذان صبح یا فجر صادق :"+toClock(sunMinus12)+"<br>"+
-  "طلوع آفتاب :"+toClock(sunrise)+"<br>"+"اذان ظهر (نیمروز):"+toClock(noon)+"<br>"+
-  "اذان عصر : "+ toClock(asrTime)+"<br>"+"غروب آفتاب :"+toClock(sunset)+"<br>"+"اذان مغرب :"
-  +toClock(maghrib)+"<br>"+"اذان عشا :"+toClock(isha)+"<br>"+"نیمه شب شرعی : "+toClock(midnight);
-    });
+  const sunrise = noon - sunAngleTime(lat, declination, -0.833);
+  const sunset  = noon + sunAngleTime(lat, declination, -0.833);
+  const fajr    = noon - sunAngleTime(lat, declination, -12);
+  const maghrib = noon + sunAngleTime(lat, declination, -4.5);
+  const isha    = noon + sunAngleTime(lat, declination, -9);
+  const asrTime = noon + asrHourAngle(lat, declination, 1); // شیعه
+  const nightDuration =(24 - maghrib) + fajr;
+  const midnight = maghrib + nightDuration / 2;
+
+  document.getElementById("output").innerHTML =
+    "اذان صبح (فجر): " + toClock(fajr) + "<br>" +
+    "طلوع آفتاب: " + toClock(sunrise) + "<br>" +
+    "اذان ظهر: " + toClock(noon) + "<br>" +
+    "اذان عصر: " + toClock(asrTime) + "<br>" +
+    "غروب آفتاب: " + toClock(sunset) + "<br>" +
+    "اذان مغرب: " + toClock(maghrib) + "<br>" +
+    "اذان عشا: " + toClock(isha) + "<br>" +
+    "نیمه شب شرعی: " + toClock(midnight);
 }
