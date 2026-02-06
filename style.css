@@ -1,17 +1,105 @@
 body {
-  font-family: sans-serif;
+  font-family: "Vazir", "Tahoma", sans-serif;
   background: #f5f5f5;
   text-align: center;
+  direction: rtl;
+  unicode-bidi: bidi-override;
+  padding-top: 20px;
 }
-#cover {
 
-  background-color: #2777c2;  /* رنگ پس‌زمینه کارت */
-  border: 2px solid #0077cc; /* خط دور کارت */
-  border-radius: 12px;       /* گوشه‌های گرد */
-  padding: 20px;             /* فاصله داخلی محتوا */
-  height: 300px;             /* طول*/
-  width: 300px;              /* عرض کارت */
-  margin: 20px auto;         /* وسط صفحه قرار گرفتن و فاصله از بالا/پایین */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* سایه برای عمق دادن */
-  text-align: center;        /* متن وسط */
+/* 1. استایل کلی باکس */
+#cover {
+  background-color: #2777c2;
+  border: 2px solid #0077cc;
+  border-radius: 12px;
+  padding: 20px;
+  width: 90%; /* عرض متغیر برای سازگاری بهتر */
+  max-width: 400px; /* حداکثر عرض برای دسکتاپ */
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  color: #fff;
+  direction: rtl;
+  /* Flexbox برای متمرکز کردن تمام آیتم‌ها */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+/* 2. استایل گروه‌بندی لیبل و ورودی */
+.input-group {
+  display: flex;
+  flex-direction: column; /* پیش‌فرض: عمودی (مناسب موبایل) */
+  text-align: right;
+  width: 100%; /* هر گروه کل عرض باکس را اشغال می‌کند */
+  margin-bottom: 10px;
+}
+
+label {
+  margin-bottom: 4px;
+  font-size: 15px;
+  padding-right: 5px; /* کمی فاصله از راست */
+}
+
+input {
+  width: calc(100% - 10px); /* عرض 100% منهای پدینگ */
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: none;
+  direction: ltr; /* برای اعداد */
+  text-align: left;
+}
+
+/* 3. استایل دکمه */
+button {
+  background-color: #004ea4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  margin-top: 15px;
+  cursor: pointer;
+  width: 80%; /* دکمه کمی پهن‌تر در مرکز */
+}
+
+#output {
+  margin-top: 15px;
+  text-align: center;
+  direction: rtl;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  padding-top: 10px;
+  width: 100%;
+}
+
+.developer {
+    margin-top: 15px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* =============================================== */
+/* *** Media Query برای صفحه نمایش‌های بزرگتر (لپتاپ و دسکتاپ) *** */
+/* =============================================== */
+@media (min-width: 768px) {
+  .input-group {
+    flex-direction: row; /* تغییر به حالت افقی */
+    align-items: center;
+    justify-content: space-between; /* لیبل و ورودی در دو طرف قرار می‌گیرند */
+    width: 100%;
+  }
+
+  label {
+    margin-bottom: 0; /* حذف فاصله عمودی */
+    padding-right: 10px;
+    flex-basis: 35%; /* لیبل 35 درصد فضا بگیرد */
+  }
+
+  input {
+    flex-basis: 60%; /* ورودی 60 درصد فضا بگیرد */
+    width: auto; /* بازنشانی به حالت استاندارد فلکس‌باکس */
+  }
+
+  button {
+      width: 50%; /* دکمه در دسکتاپ کمی جمع‌تر شود */
+  }
+}
+
