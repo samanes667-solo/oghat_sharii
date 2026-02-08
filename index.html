@@ -5,16 +5,94 @@
 <title>اوقات شرعی</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
 <div id="cover">
-  <h2>اوقات شرعی امروز</h2>
-  <label>طول جغرافیایی: </label><input type="number" id="latitude"><br>
-  <label>عرض جغرافیایی: </label><input type="number" id="longitude"><br>
-  <label>منطقه زمانی: </label><input type="number" id="timeZone" value="3.5"><br>
-  <button id="btn">نمایش اوقات</button>
-  <div id="output"></div><br><br>
-  <div>برنامه‌نویس : ابوالقاسم اسلامی</div>
+  <h2>اوقات شرعی</h2>
+  <p id="demo"></p>
+
+  <div class="input-group">
+    <label>انتخاب شهر:</label>
+    <select id="citySelect">
+      <option value="">— انتخاب شهر —</option>
+      <option value="تهران">تهران</option>
+      <option value="قم">قم</option>
+      <option value="مشهد">مشهد</option>
+      <option value="اصفهان">اصفهان</option>
+      <option value="شیراز">شیراز</option>
+      <option value="بغداد">بغداد</option>
+      <option value="نجف">نجف</option>
+      <option value="کربلا">کربلا</option>
+      <option value="کابل">کابل</option>
+      <option value="هرات">هرات</option>
+      <option value="آنکارا">آنکارا</option>
+      <option value="استانبول">استانبول</option>
+      <option value="ریاض">ریاض</option>
+      <option value="دوحه">دوحه</option>
+      <option value="بیروت">بیروت</option>
+    </select>
+  </div>
+
+  <div class="input-group">
+    <label>عرض جغرافیایی:</label>
+    <input type="number" id="latitude" step="0.0001">
+  </div>
+
+  <div class="input-group">
+    <label>طول جغرافیایی:</label>
+    <input type="number" id="longitude" step="0.0001">
+  </div>
+
+  <div class="input-group">
+    <label>منطقه زمانی:</label>
+    <input type="number" id="timeZone" value="3.5" step="0.5">
+  </div>
+
+  <button onclick="showTimes()">نمایش اوقات</button>
+
+  <!-- دکمه‌های مدیریت شهرهای کاربر -->
+  <div class="management-buttons">
+    <button class="btn-save" onclick="showSaveCityForm()">💾 ذخیره این شهر</button>
+    <button class="btn-list" onclick="showUserCities()">📋 شهرهای من</button>
+  </div>
+
+  <!-- فرم ذخیره شهر (مخفی) -->
+  <div id="saveCityForm" style="display: none;">
+    <div class="input-group">
+      <label>نام شهر برای ذخیره:</label>
+      <input type="text" id="cityName" placeholder="مثال: شهر من">
+    </div>
+    <div style="margin-top: 10px; text-align: center;">
+      <button class="btn-save" onclick="saveUserCity()" style="width: 45%; margin: 0 5px;">
+        تأیید و ذخیره
+      </button>
+      <button class="btn-cancel" onclick="hideSaveCityForm()" style="width: 45%; margin: 0 5px;">
+        لغو
+      </button>
+    </div>
+  </div>
+
+  <!-- منوی شهرهای کاربر (مخفی) -->
+  <div id="userCitiesList" style="display: none;">
+    <h4 style="margin-bottom: 10px; text-align: center;">شهرهای ذخیره شده شما</h4>
+    <div id="userCitiesContainer">
+      <!-- شهرهای کاربر اینجا نمایش داده می‌شوند -->
+    </div>
+    <div style="text-align: center; margin-top: 10px;">
+      <button class="btn-cancel" onclick="hideUserCities()" style="width: 70%;">
+        بستن
+      </button>
+    </div>
+  </div>
+
+  <div id="output"></div>
+
+  <div class="developer">
+    برنامه‌نویس: ابوالقاسم اسلامی
+  </div>
 </div>
+
 </body>
 <script src="script.js"></script>
 </html>
