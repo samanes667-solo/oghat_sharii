@@ -1,10 +1,19 @@
+
+<style>
 body {
   font-family: "Vazir", "Tahoma", sans-serif;
   background: #f5f5f5;
   text-align: center;
   direction: rtl;
-  unicode-bidi: bidi-override;
   padding-top: 20px;
+  margin: 0;
+}
+
+#demo {
+  font-family: "Vazir", "Tahoma", sans-serif;
+  color: white;
+  font-size: large;
+  margin-bottom: 10px;
 }
 
 /* 1. استایل کلی باکس */
@@ -13,13 +22,11 @@ body {
   border: 2px solid #0077cc;
   border-radius: 12px;
   padding: 20px;
-  width: 90%; /* عرض متغیر برای سازگاری بهتر */
-  max-width: 400px; /* حداکثر عرض برای دسکتاپ */
+  width: 90%;
+  max-width: 400px;
   margin: 20px auto;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   color: #fff;
-  direction: rtl;
-  /* Flexbox برای متمرکز کردن تمام آیتم‌ها */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,78 +35,252 @@ body {
 /* 2. استایل گروه‌بندی لیبل و ورودی */
 .input-group {
   display: flex;
-  flex-direction: column; /* پیش‌فرض: عمودی (مناسب موبایل) */
-  text-align: right;
-  width: 100%; /* هر گروه کل عرض باکس را اشغال می‌کند */
-  margin-bottom: 10px;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 12px;
 }
 
-label {
-  margin-bottom: 4px;
+.input-group label {
+  margin-bottom: 5px;
   font-size: 15px;
-  padding-right: 5px; /* کمی فاصله از راست */
+  text-align: center;
+  width: 100%;
 }
 
-input {
-  width: calc(100% - 10px); /* عرض 100% منهای پدینگ */
-  padding: 8px 10px;
-  border-radius: 6px;
+.input-group input,
+.input-group select {
+  width: 70%;
+  max-width: 180px;
+  padding: 8px 12px;
+  border-radius: 8px;
   border: none;
-  direction: ltr; /* برای اعداد */
-  text-align: left;
+  direction: ltr;
+  text-align: center;
+  font-family: "Vazir", "Tahoma", sans-serif;
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.95);
+  transition: all 0.3s ease;
+  margin: 0 auto;
+  display: block;
 }
 
-/* 3. استایل دکمه */
+.input-group input:focus,
+.input-group select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 150, 255, 0.3);
+  background-color: white;
+}
+
+/* 3. استایل دکمه‌ها */
 button {
   background-color: #004ea4;
   color: white;
   border: none;
   border-radius: 6px;
   padding: 10px 20px;
-  margin-top: 15px;
+  margin-top: 8px;
   cursor: pointer;
-  width: 80%; /* دکمه کمی پهن‌تر در مرکز */
+  width: 80%;
+  font-family: "Vazir", "Tahoma", sans-serif;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 #output {
   margin-top: 15px;
-  text-align: center;
-  direction: rtl;
   border-top: 1px solid rgba(255, 255, 255, 0.3);
-  padding-top: 10px;
+  padding-top: 15px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* استایل برای نمایش اوقات */
+.prayer-times {
+  width: 100%;
+  max-width: 300px;
+  text-align: right;
+  direction: rtl;
+}
+
+.prayer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.prayer-row:last-child {
+  border-bottom: none;
+  border-top: 1px dashed rgba(255, 255, 255, 0.3);
+  margin-top: 10px;
+  padding-top: 12px;
+}
+
+.prayer-name {
+  text-align: right;
+  flex: 1;
+  font-size: 15px;
+}
+
+.prayer-time {
+  text-align: left;
+  direction: ltr;
+  font-weight: bold;
+  min-width: 70px;
+  font-size: 16px;
 }
 
 .developer {
-    margin-top: 15px;
-    font-size: 12px;
-    opacity: 0.7;
+  margin-top: 20px;
+  font-size: 12px;
+  opacity: 0.7;
+  text-align: center;
+  width: 100%;
+}
+
+/* استایل برای select */
+select {
+  cursor: pointer;
+}
+
+/* استایل فرم و لیست شهرهای کاربر */
+#saveCityForm,
+#userCitiesList {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+#saveCityForm input {
+  text-align: center;
+  direction: rtl;
+}
+
+#userCitiesContainer {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.user-city-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: 5px 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+.user-city-info {
+  text-align: right;
+  flex: 1;
+}
+
+.user-city-info strong {
+  display: block;
+  margin-bottom: 3px;
+}
+
+.user-city-info small {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.user-city-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.user-city-actions button {
+  width: auto;
+  padding: 5px 10px;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* اسکرول بار سفارشی */
+#userCitiesContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+#userCitiesContainer::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+}
+
+#userCitiesContainer::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.3);
+  border-radius: 3px;
+}
+
+/* دکمه‌های مدیریت */
+.management-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.management-buttons button {
+  width: 48%;
+  padding: 8px 15px;
+  font-size: 14px;
+}
+
+.btn-save {
+  background-color: #28a745;
+}
+
+.btn-list {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+}
+
+.btn-delete {
+  background-color: #dc3545;
 }
 
 /* =============================================== */
-/* *** Media Query برای صفحه نمایش‌های بزرگتر (لپتاپ و دسکتاپ) *** */
+/* *** Media Query برای صفحه نمایش‌های بزرگتر *** */
 /* =============================================== */
 @media (min-width: 768px) {
-  .input-group {
-    flex-direction: row; /* تغییر به حالت افقی */
-    align-items: center;
-    justify-content: space-between; /* لیبل و ورودی در دو طرف قرار می‌گیرند */
-    width: 100%;
+  #cover {
+    max-width: 380px;
+    padding: 25px;
   }
-
-  label {
-    margin-bottom: 0; /* حذف فاصله عمودی */
-    padding-right: 10px;
-    flex-basis: 35%; /* لیبل 35 درصد فضا بگیرد */
+  
+  .input-group input,
+  .input-group select {
+    width: 65%;
+    max-width: 160px;
   }
-
-  input {
-    flex-basis: 60%; /* ورودی 60 درصد فضا بگیرد */
-    width: auto; /* بازنشانی به حالت استاندارد فلکس‌باکس */
-  }
-
+  
   button {
-      width: 50%; /* دکمه در دسکتاپ کمی جمع‌تر شود */
+    width: 70%;
+  }
+  
+  .management-buttons button {
+    width: 45%;
+  }
+  
+  .prayer-times {
+    max-width: 280px;
   }
 }
-
+</style>
